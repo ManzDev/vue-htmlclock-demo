@@ -1,0 +1,27 @@
+
+@font-face{font-family:Digital Numbers;src:url(https://raw.githubusercontent.com/s-a/digital-numbers-font/gh-pages/dist/DigitalNumbers-Regular.woff) format("woff")
+}
+.html-clock[data-v-44da46]{background:#000;width:600px;height:175px;margin:2em auto;-ms-flex-pack:center;justify-content:center;padding:0 40px
+}
+.html-clock[data-v-44da46],.lcd[data-v-44da46]{display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center
+}
+.lcd[data-v-44da46]{background:linear-gradient(165deg,transparent 40%,hsla(0,0%,100%,.1),transparent 60%),#111;padding:20px;font-family:Digital Numbers,sans-serif;font-size:64px;box-shadow:0 0 10px rgba(0,0,0,.5)
+}
+.lcd img[data-v-44da46]{width:75px;transform:scale(2) translateX(-5px)
+}
+.mode[data-v-44da46]{font-size:22px
+}
+.sep[data-v-44da46]{animation:blink-data-v-44da46 1s linear infinite
+}
+@keyframes blink-data-v-44da46{
+0%,49%{opacity:1
+}
+50%,to{opacity:0
+}
+}
+.red-lcd[data-v-44da46]{color:red
+}
+.green-lcd[data-v-44da46]{color:green
+}
+.blue-lcd[data-v-44da46]{color:#00f
+}:root{height:100vh;background:linear-gradient(80deg,#999,#555,#333)}
