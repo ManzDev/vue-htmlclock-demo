@@ -2,13 +2,13 @@
   <!-- Recuerda: Sólo un elemento raíz padre -->
   <!-- Usa el prop theme como clase para dar estilo -->
   <div class="html-clock" :class="theme">
+    <img class="vue" src="/assets/logo.png" alt="VueJS Logo">
     <div class="lcd">
-      <img src="~/assets/logo.png" alt="VueJS Logo">
-      <div class="hours">{{ hours }}</div>
+      <div class="hours">{{ hours | toHuman }}</div>
       <div class="sep">:</div>
-      <div class="minutes">{{ minutes }}</div>
+      <div class="minutes">{{ minutes | toHuman }}</div>
       <div class="sep">:</div>
-      <div class="seconds">{{ seconds }}</div>
+      <div class="seconds">{{ seconds | toHuman }}</div>
       <div class="mode">{{ mode }}</div>
     </div>
   </div>
@@ -19,7 +19,7 @@
   const THEMES = ['red-lcd', 'green-lcd', 'blue-lcd'];
 
   export default {
-    // Si se omite, es un componente anónimo
+    // Le damos un nombre (útil a la hora de depurar en Vue Dev Tools)
     name: 'HTMLClock',
     // Props detallados (con tipado, validación y valores por defecto)
     props: {
@@ -45,26 +45,29 @@
       // Actualiza las horas, minutos y segundos del reloj
       update() {
         const date = new Date();
-        this.hours = date.getHours().toString().padStart(2, '0');
-        this.minutes = date.getMinutes().toString().padStart(2, '0');
-        this.seconds = date.getSeconds().toString().padStart(2, '0');
+        this.hours = date.getHours();
+        this.minutes = date.getMinutes();
+        this.seconds = date.getSeconds();
         this.mode = this.hours >= 12 ? 'PM' : 'AM';
       },
-      // Inicializa el timer del reloj
-      start() {
+      // Inicializa el temporizador del reloj
+      startTimer() {
         this.tickId = setInterval(this.update, 1000);
       },
-      // Para el timer del reloj
-      stop() {
+      // Detiene el temporizador del reloj
+      stopTimer() {
         clearInterval(this.tickId);
       }
+    },
+    filters: {
+      toHuman: v => v.toString().padStart(2, '0')
     },
     // Se ejecuta cuando se monta un componente (similar al constructor)
     mounted() {
       document.title = 'VueClock.js';
-      this.start();
+      this.startTimer();
     }
-  };
+  }
 </script>
 
 <style lang="postcss" scoped>
@@ -76,6 +79,7 @@
   /* Contenedor padre */
   .html-clock {
     background: #000;
+    border-radius: 15px;
     width: 600px;
     height: 175px;
     margin: 2em auto;
@@ -83,6 +87,7 @@
     justify-content: center;
     align-items: center;
     padding: 0 40px;
+    color: var(--textColor);
   }
 
   /* Cristal LCD del reloj */
@@ -92,20 +97,35 @@
     background: linear-gradient(165deg, transparent 40%, rgba(255, 255, 255, 0.1), transparent 60%), #111;
     padding: 20px;
     font-family: 'Digital Numbers', sans-serif;
-    font-size: 64px;
+    font-size: 72px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
 
-    & img {
-      width: 75px;
-      transform: scale(2) translateX(-5px);
-    }
+  /* Logo de VUE */
+  .vue {
+    width: 125px;
+    transform: scale(1.75);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hours,
+  .minutes,
+  .seconds,
+  .sep {
+    letter-spacing: -10px;
   }
 
   /* AM / PM */
-  .mode { font-size: 22px; }
+  .mode {
+    font-size: 22px;
+    padding-left: 10px;
+  }
 
   /* Parpadeo de los dos separadores */
-  .sep { animation: blink 1s linear infinite; }
+  .sep {
+    animation: blink 1s linear infinite;
+  }
 
   @keyframes blink {
     0%,
@@ -116,7 +136,15 @@
   }
 
   /* Themes disponibles */
-  .red-lcd { color: red; }
-  .green-lcd { color: green; }
-  .blue-lcd { color: blue; }
+  .red-lcd {
+    --textColor: red;
+  }
+
+  .green-lcd {
+    --textColor: green;
+  }
+
+  .blue-lcd {
+    --textColor: blue;
+  }
 </style>
